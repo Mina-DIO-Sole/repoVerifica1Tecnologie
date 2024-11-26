@@ -1,15 +1,18 @@
 // app.component.ts
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; 
-import { Mante } from './mante.model';  
+import { HttpClient } from '@angular/common/http';
+import { Mante } from './mante.model';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'client-angular';  
+  title = 'client-angular';
   products: Mante[] = [];  
+  endangeredMantas: Mante[] = [];  
+  nonEndangeredMantas: Mante[] = [];  
 
   constructor(private http: HttpClient) {}
 
@@ -21,13 +24,15 @@ export class AppComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.products = response.mante;  
-          console.log('Dati ricevuti:', this.products);  
+          console.log('Dati ricevuti:', this.products);
+
+          this.endangeredMantas = this.products.filter(manta => manta.estinzione === true);
+          this.nonEndangeredMantas = this.products.filter(manta => manta.estinzione === false);
         },
         error: (error) => {
-          console.error('Errore nel recupero dei dati:', error);  
+          console.error('Errore nel recupero dei dati:', error);
         }
       });
   }
 }
-
 
