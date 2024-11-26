@@ -1,29 +1,34 @@
-import { TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import { Component, OnInit } from '@angular/core';
+import {HttpClient} from '@angular/common/http'; 
+import { Mante } from './mante.model';
+import { CommonModule } from '@angular/common';
 
-describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AppComponent],
-    }).compileComponents();
-  });
+@Component({
+  selector: 'app-root',
+  imports: [CommonModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+export class AppComponent implements OnInit{
+  title = 'client-angular'
+  mante: Mante[] = [];
+    constructor(private http: HttpClient) {}
 
-  it(`should have the 'mante-app' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('mante-app');
-  });
+  ngOnInit(): void {
+  
+    this.http.get<{mante: Mante[]}>('https://3000-raffomagno-verificatecn-t7a2eijs926.ws-eu116.gitpod.io/api/mante')
+      .subscribe({
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, mante-app');
-  });
-});
+        next: (response) => {
+          this.mante = response.mante;
+          console.log('Received data:', this.mante);
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        }
+      });
+  }
+
+
+}

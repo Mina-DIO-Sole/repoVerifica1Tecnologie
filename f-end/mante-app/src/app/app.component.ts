@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http'; 
+import { Mante } from './mante.model'; 
 
 @Component({
   selector: 'app-root',
@@ -7,14 +8,22 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  manteData: any;
+  title = 'client-angular';  
+  mante: Mante[] = []; 
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-    this.http.get<any>('http://localhost:3000/api/mante').subscribe(data => {
-      this.manteData = data.mante;
-      console.log(this.manteData);
-    });
+  ngOnInit(): void {
+    this.http.get<{ mante: Mante[] }>('https://3000-raffomagno-verificatecn-t7a2eijs926.ws-eu116.gitpod.io/api/mante')
+      .subscribe({
+        next: (response) => {
+          this.mante = response.mante; 
+          console.log('Received data:', this.mante); 
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error); 
+        }
+      });
   }
 }
+
