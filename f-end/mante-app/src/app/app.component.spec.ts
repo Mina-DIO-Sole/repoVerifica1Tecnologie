@@ -17,7 +17,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
   
-    this.http.get<{mante: Mante[]}>('https://3000-raffomagno-verificatecn-t7a2eijs926.ws-eu116.gitpod.io/api/mante')
+    this.http.get<{mante: Mante[]}>('https://3000-minadiosole-verificatecn-t7a2eijs926.ws-eu116.gitpod.io/api/mante')
       .subscribe({
 
         next: (response) => {
